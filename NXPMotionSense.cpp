@@ -18,7 +18,20 @@ bool NXPMotionSense::begin()
 	memset(accel_mag_raw, 0, sizeof(accel_mag_raw));
 	memset(gyro_raw, 0, sizeof(gyro_raw));
 
+	if (!FXOS8700_begin()) {
+		delay(1000);  // try once more
+		if (!FXOS8700_begin()) return false;
+        };
+	if (!FXAS21002_begin()) {
+		delay(1000);  // try once more
+		if (!FXAS21002_begin()) return false;
+        };
+	if (!MPL3115_begin()) {
+		delay(1000);  // try once more
+		if (!MPL3115_begin()) return false;
+        };
 	//Serial.println("init hardware");
+	/*
 	while (!FXOS8700_begin()) {
 		Serial.println("config error FXOS8700");
 		delay(1000);
@@ -31,6 +44,7 @@ bool NXPMotionSense::begin()
 		Serial.println("config error MPL3115");
 		delay(1000);
 	}
+	*/
 	//Serial.println("init done");
 
 	for (i=0; i < NXP_MOTION_CAL_SIZE; i++) {
